@@ -1,0 +1,55 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+package app {
+  interface ProductoRO {
+    +String getCodigo()
+    +String getNombre()
+    +String getDescripcion()
+    +double getPrecio()
+    +int getStock()
+  }
+
+  class Producto implements ProductoRO {
+    -String codigo
+    -String nombre
+    -String descripcion
+    -double precio
+    -int stock
+    +Producto(codigo, nombre, descripcion, precio, stock)
+    +String getCodigo()
+    +String getNombre()
+    +String getDescripcion()
+    +double getPrecio()
+    +int getStock()
+    +void setNombre(String)
+    +void setDescripcion(String)
+    +void setPrecio(double)
+    +void setStock(int)
+  }
+
+  class Inventario {
+    -java.util.Map<String, Producto> porCodigo
+    +boolean agregar(Producto)
+    +boolean eliminar(String codigo)
+    +java.util.Optional<ProductoRO> buscarPorCodigo(String codigo)
+    +java.util.List<ProductoRO> listarTodos()
+    +boolean actualizarPrecio(String codigo, double nuevoPrecio)
+    +boolean actualizarStock(String codigo, int nuevoStock)
+    +java.util.List<ProductoRO> buscarPorTexto(String texto)
+  }
+
+  class MenuPrincipal {
+    -java.util.Scanner in
+    -Inventario inventario
+    +void main(String[] args)
+    -void mostrarMenu()
+  }
+
+  MenuPrincipal --> Inventario : usa
+  Inventario "1" o-- "*" Producto : contiene
+  Producto ..|> ProductoRO
+}
+@enduml

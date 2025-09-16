@@ -104,4 +104,55 @@ public final class Inventario {
         }
         return "Productos: " + total + " | Valor inventario: " + String.format("%.2f", valor);
     }
+
+    // ---------- ADAPTADORES PARA PRUEBAS DE INTEGRACIÓN (E2E) ----------
+    /*
+     * API auxiliar para los tests E2E:
+     * - agregar(Producto)
+     * - eliminar(String)
+     * - actualizarPrecio(String, double)
+     * - actualizarStock(String, int)
+     * - buscarPorTexto(String)  -> reusa la búsqueda por nombre/descr.
+     * No reemplaza la API existente; solo la complementa.
+     */
+
+    // Agrega un producto ya construido
+    public boolean agregar(Producto p) {
+        if (p == null) return false;
+        String cod = norm(p.getCodigo());
+        if (cod == null) return false;
+        if (productos.containsKey(cod)) return false; // evita duplicados
+        productos.put(cod, p);
+        return true;
+    }
+
+    // Elimina por código (delegando a la operación existente)
+    public boolean eliminar(String codigo) {
+        return eliminarPorCodigo(codigo);
+    }
+
+    // Actualiza precio por código
+    public boolean actualizarPrecio(String codigo, double nuevoPrecio) {
+        if (nuevoPrecio < 0) return false;
+        Producto p = productos.get(norm(codigo));
+        if (p == null) return false;
+        // En este proyecto ya usas actualizarPrecio(...) en Producto
+        p.actualizarPrecio(nuevoPrecio);
+        return true;
+    }
+
+    // Actualiza stock por código
+    public boolean actualizarStock(String codigo, int nuevoStock) {
+        if (nuevoStock < 0) return false;
+        Producto p = productos.get(norm(codigo));
+        if (p == null) return false;
+        p.setStock(nuevoStock);
+        return true;
+    }
+
+    // Búsqueda por texto en nombre/descripcion (case-insensitive)
+    public List<ProductoRO> buscarPorTexto(String texto) {
+        // Reutiliza la búsqueda ya implementada
+        return buscarPorNombre(texto);
+    }
 }
