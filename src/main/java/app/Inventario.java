@@ -112,7 +112,7 @@ public final class Inventario {
      * - eliminar(String)
      * - actualizarPrecio(String, double)
      * - actualizarStock(String, int)
-     * - buscarPorTexto(String)  -> reusa la búsqueda por nombre/descr.
+     * - buscarPorTexto(String)
      * No reemplaza la API existente; solo la complementa.
      */
 
@@ -126,7 +126,7 @@ public final class Inventario {
         return true;
     }
 
-    // Elimina por código (delegando a la operación existente)
+    // Elimina por código
     public boolean eliminar(String codigo) {
         return eliminarPorCodigo(codigo);
     }
@@ -136,7 +136,6 @@ public final class Inventario {
         if (nuevoPrecio < 0) return false;
         Producto p = productos.get(norm(codigo));
         if (p == null) return false;
-        // En este proyecto ya usas actualizarPrecio(...) en Producto
         p.actualizarPrecio(nuevoPrecio);
         return true;
     }
@@ -150,7 +149,7 @@ public final class Inventario {
         return true;
     }
 
-    // Búsqueda por texto en nombre/descripcion (case-insensitive)
+    // Búsqueda por texto en nombre/descripcion
     public List<ProductoRO> buscarPorTexto(String texto) {
         // Reutiliza la búsqueda ya implementada
         return buscarPorNombre(texto);
